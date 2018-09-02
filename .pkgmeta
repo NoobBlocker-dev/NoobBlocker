@@ -1,0 +1,9 @@
+package-as: NoobBlocker
+
+enable-no-lib-creation: no
+
+manual-changelog: 
+    filename: CHANGELOG.md
+    markup-type: markdown
+
+ignore: README.md
