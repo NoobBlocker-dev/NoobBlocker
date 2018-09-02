@@ -1,7 +1,7 @@
 local AceConfig = LibStub("AceConfig-3.0")
 
 local defaults = {
-    response = "This player is ignoring unskilled players.",
+    response = "This player is ignoring players from your realm.",
     blocklist = {
         QuelThalas = { blocked = true },
         Drakkari = { blocked = true },
@@ -40,8 +40,15 @@ local optionsTable = {
             get = function() return NoobBlocker_Options.response end,
             set = function(_, val) NoobBlocker_Options.response = val end
         },
+        silentMode = {
+            name = "Silent Mode",
+            desc = "Prevent auto whispering, silently blocking players.",
+            type = "toggle",
+            cmdHidden = true,
+            get = function() return NoobBlocker_Options.silent end,
+            set = function(_, val) NoobBlocker_Options.silent = val end
+        },
         addEntry = {
-            order = 2,
             name = "Add Entry",
             type = "group",
             cmdHidden = true,
@@ -92,7 +99,7 @@ local optionsTable = {
                                     local playerData = NoobBlocker:DB_GetPlayer(realm, player)
                                     playerData.blocked = true
                                 end
-                                
+
                             else 
                                 realmData.blocked = true
                             end
@@ -141,6 +148,16 @@ local function SetupBlockedPlayerOptions(realm)
 
             local playerArgs = {}
             playerGroup.args = playerArgs
+
+            local silentMode = {}
+            playerArgs.silentMode = silentMode
+
+            silentMode.name = "Silent Mode"
+            silentMode.desc = "Silently block this player from groups. Prevents auto reply."
+            silentMode.type = "toggle"
+            silentMode.cmdHidden = true
+            silentMode.get = function() return NoobBlocker:DB_GetPlayer(realm, player).silent or false end
+            silentMode.set = function(_, val) NoobBlocker:DB_GetPlayer(realm, player).silent = val end
 
             local blocked = {}
             playerArgs.blocked = blocked
@@ -194,6 +211,16 @@ function NoobBlocker:RefreshBlocklist()
         realmHeader.name = tostring(realm)
         realmHeader.type = "header"
         realmHeader.order = 0
+
+        local silentMode = {}
+        realmArgs.silentMode = silentMode
+
+        silentMode.name = "Silent Mode"
+        silentMode.desc = "Silently block this realm from groups. Prevents auto reply."
+        silentMode.type = "toggle"
+        silentMode.cmdHidden = true
+        silentMode.get = function() return NoobBlocker:DB_GetRealm(realm).silent or false end
+        silentMode.set = function(_, val) NoobBlocker:DB_GetRealm(realm).silent = val end
 
         local blocked = {}
         realmArgs.blocked = blocked

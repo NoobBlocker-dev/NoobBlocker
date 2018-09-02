@@ -1,3 +1,5 @@
+----todo: raiderIO filtering. 
+
 function NoobBlocker:FormatRealm(realm)
     return realm:gsub('[%p%c%s]', '')
 end
@@ -49,6 +51,7 @@ _G.StaticPopupDialogs["NOOBBLOCKER_ADD_USER"] = {
 _G.StaticPopupDialogs["NOOBBLOCKER_DECLINE_USER"] = {
     text = "%s",
     button1 = ACCEPT,
+    button2 = CLOSE,
     hasEditBox = false,
     timeout = 0,
     whileDead = true,
@@ -58,13 +61,21 @@ _G.StaticPopupDialogs["NOOBBLOCKER_DECLINE_USER"] = {
         local decline = self.button1
         
         decline:ClearAllPoints()
-        decline:SetWidth(200)
+        decline:SetWidth(185)
         decline:SetPoint("CENTER", self, "CENTER", 0, -10)
+
+        local close = self.button2
+
+        close:ClearAllPoints()
+        close:SetWidth(50)
+        close:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -5, 5)
     end,
     OnHide = nil,
     OnAccept = function(self, id)
         C_LFGList.DeclineApplicant(id)
-        SendChatMessage("[NoobBlocker]: " ..NoobBlocker:GetResponse(self.realm, self.player), "WHISPER", nil, self.fullName)
+        if not NoobBlocker_Options.silent and not NoobBlocker:DB_GetPlayer(self.realm, self.player).silent then
+            SendChatMessage("[NoobBlocker]: " ..NoobBlocker:GetResponse(self.realm, self.player), "WHISPER", nil, self.fullName)
+        end
     end,
     OnCancel = nil,        
 }
@@ -79,8 +90,10 @@ function NoobBlocker:CHAT_MSG_WHISPER(event, msg, author)
 
         if playerData.blocked then 
             local response = self:GetResponse(realm, player)
-            SendChatMessage("[NoobBlocker]: " ..response, "WHISPER", nil, author)
-            return
+            if not playerData.silent and not NoobBlocker_Options.silent then
+                SendChatMessage("[NoobBlocker]: " ..response, "WHISPER", nil, author)
+            end
+            return -- exit early since we already blocked via player.
         end
     end
 
@@ -90,7 +103,9 @@ function NoobBlocker:CHAT_MSG_WHISPER(event, msg, author)
 
         if realmData.blocked then
             local response = self:GetResponse(realm)
-            SendChatMessage("[NoobBlocker]: " ..response, "WHISPER", nil, author)
+            if not realmData.silent and not NoobBlocker_Options.silent then 
+                SendChatMessage("[NoobBlocker]: " ..response, "WHISPER", nil, author)
+            end
         end
     end
 end
@@ -128,7 +143,7 @@ function NoobBlocker:LFG_LIST_APPLICANT_LIST_UPDATED(event, hasPending, hasPendi
     if not UnitIsGroupLeader("Player", LE_PARTY_CATEGORY_HOME) then
         return
     end
-    
+    StaticPopup_Hide("NOOBBLOCKER_DECLINE_USER") -- hide to prevent edge case where the player leaves before button was clicked.
     if hasPending and hasPendingData then
         local applicants = C_LFGList.GetApplicants()
 
