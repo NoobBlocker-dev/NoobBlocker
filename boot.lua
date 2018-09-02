@@ -6,4 +6,3 @@ function NoobBlocker:OnInitialize()
     self:SetupHooks()
     self:RegisterChatEvents()
 end
-
