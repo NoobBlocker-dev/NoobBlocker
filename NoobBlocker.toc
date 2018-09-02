@@ -1,0 +1,27 @@
+## Interface: 80000
+## Title: Noob Blocker
+## Notes: Blocks unwanted realms and or players.
+## SavedVariables: NoobBlocker_DB, NoobBlocker_Options
+## Version: 9.1.2018
+libs\LibStub\LibStub.lua
+
+#@no-lib-strip@
+libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
+libs\AceAddon-3.0\AceAddon-3.0.xml
+libs\AceComm-3.0\AceComm-3.0.xml
+libs\AceConfig-3.0\AceConfig-3.0.xml
+libs\AceHook-3.0\AceHook-3.0.xml
+libs\AceEvent-3.0\AceEvent-3.0.xml
+libs\AceConsole-3.0\AceConsole-3.0.xml
+libs\AceGUI-3.0\AceGUI-3.0.xml
+libs\AceConfig-3.0\AceConfigDialog-3.0\AceConfigDialog-3.0.xml
+#@end-no-lib-strip@
+boot.lua
+
+hooks.lua
+NoobBlocker.lua
+config.lua
+db.lua
+
+
+
