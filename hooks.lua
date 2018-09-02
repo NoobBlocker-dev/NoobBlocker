@@ -34,7 +34,7 @@ function NoobBlocker:DropDownList_OnShow(frame)
 
     local shouldDisplayButton, playerName, playerRealm
 
-    -- handle bnet friends for memes
+    -- maybe some day we'll care about bnet friends but its stupid right now.
     if dropdown.bnetIDAccount then 
         return -- exit since we shouldn't care about bnet friends.
 
@@ -69,7 +69,7 @@ function NoobBlocker:DropDownList_OnShow(frame)
         if NoobBlocker:DB_PlayerExists(playerRealm, playerName) then
             info = {
                 text = "Unblock Noob",
-                func = function() NoobBlocker:DB_RemoveUser(playerRealm, playerName) end, 
+                func = function() NoobBlocker:DB_RemovePlayer(playerRealm, playerName) end, 
                 notCheckable = true,
             }
         else
