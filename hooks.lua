@@ -55,10 +55,16 @@ function NoobBlocker:DropDownList_OnShow(frame)
         end
     end
     
+
+
+    if not playerRealm then 
+        playerRealm = GetRealmName() -- assume same realm
+    end
+
     playerRealm = NoobBlocker:FormatRealm(playerRealm)
 
-    if not playerRealm or playerRealm == "" then 
-        playerRealm = GetRealmName() -- assume same realm
+    if playerRealm == "" then
+        return
     end
 
     if playerName == UnitName("player") then

@@ -1,4 +1,5 @@
-----todo: raiderIO filtering. 
+----todo: raiderIO filtering.
+----todo: friend channels to share blocklists. 
 
 function NoobBlocker:FormatRealm(realm)
     return realm:gsub('[%p%c%s]', '')
