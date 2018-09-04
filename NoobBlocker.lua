@@ -1,8 +1,45 @@
 ----todo: raiderIO filtering.
 ----todo: friend channels to share blocklists. 
 
+local TIMEOUT_TIME = 30
+
+
 function NoobBlocker:FormatRealm(realm)
     return realm:gsub('[%p%c%s]', '')
+end
+
+function NoobBlocker:SendWhisperMessage(msg, realm, name)
+    if not name or not realm then
+        return
+    end
+
+    if NoobBlocker_Options.silent then 
+        return
+    end
+
+    if self:DB_GetRealm(realm).silent then
+        return
+    end
+
+    local fullName = name..'-'..realm
+
+    if self:DB_PlayerExists(realm, name) then
+        local player = self:DB_GetPlayer(realm, name)
+
+        if player.silent then 
+            --print("player is silent exit")
+            return
+        end
+
+        if player.timeout and player.timeout > time() then
+            --print("Player has timeout of "..tostring(player.timeout - time()))
+            return
+        end
+
+        --player.timeout = (time() + TIMEOUT_TIME)
+        print(player.timeout)
+    end
+    SendChatMessage(msg, "WHISPER", nil, fullName)
 end
 
 _G.StaticPopupDialogs["NOOBBLOCKER_ADD_USER"] = {
@@ -74,9 +111,7 @@ _G.StaticPopupDialogs["NOOBBLOCKER_DECLINE_USER"] = {
     OnHide = nil,
     OnAccept = function(self, id)
         C_LFGList.DeclineApplicant(id)
-        if not NoobBlocker_Options.silent and not NoobBlocker:DB_GetPlayer(self.realm, self.player).silent then
-            SendChatMessage("[NoobBlocker]: " ..NoobBlocker:GetResponse(self.realm, self.player), "WHISPER", nil, self.fullName)
-        end
+        NoobBlocker:SendWhisperMessage("[NoobBlocker]: " ..NoobBlocker:GetResponse(self.realm, self.player), self.realm, self.player)
     end,
     OnCancel = nil,        
 }
@@ -91,9 +126,7 @@ function NoobBlocker:CHAT_MSG_WHISPER(event, msg, author)
 
         if playerData.blocked then 
             local response = self:GetResponse(realm, player)
-            if not playerData.silent and not NoobBlocker_Options.silent then
-                SendChatMessage("[NoobBlocker]: " ..response, "WHISPER", nil, author)
-            end
+            NoobBlocker:SendWhisperMessage("[NoobBlocker]: " ..response, realm, player)
             return -- exit early since we already blocked via player.
         end
     end
@@ -104,9 +137,7 @@ function NoobBlocker:CHAT_MSG_WHISPER(event, msg, author)
 
         if realmData.blocked then
             local response = self:GetResponse(realm)
-            if not realmData.silent and not NoobBlocker_Options.silent then 
-                SendChatMessage("[NoobBlocker]: " ..response, "WHISPER", nil, author)
-            end
+            NoobBlocker:SendWhisperMessage("[NoobBlocker]: " ..response, realm, player)
         end
     end
 end

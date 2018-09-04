@@ -1,3 +1,6 @@
+# 9.3.2018
+added a timeout period to messages to prevent spamming.
+
 # 9.2.2018.3
 Fixed players from your own realm causing an error when right clicked.
 
