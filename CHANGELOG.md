@@ -1,3 +1,10 @@
+#9.5.2018 
+Accidentally commented out the timeout function oops. 
+
+Added timeout to realm blocked players as well due to things like this
+
+![spam](https://i.imgur.com/FAnrgNt.png)
+
 # 9.3.2018
 added a timeout period to messages to prevent spamming.
 

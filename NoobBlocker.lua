@@ -3,6 +3,7 @@
 
 local TIMEOUT_TIME = 30
 
+local timeout_table = {}
 
 function NoobBlocker:FormatRealm(realm)
     return realm:gsub('[%p%c%s]', '')
@@ -36,8 +37,20 @@ function NoobBlocker:SendWhisperMessage(msg, realm, name)
             return
         end
 
-        --player.timeout = (time() + TIMEOUT_TIME)
-        print(player.timeout)
+        player.timeout = (time() + TIMEOUT_TIME)
+        --print(player.timeout)
+    else 
+        local player = timeout_table[fullName]
+
+        if not player then 
+            player = {}
+        end
+
+        if player.timeout and player.timeout > time() then 
+            return 
+        else
+            player.timeout = (time() + TIMEOUT_TIME)
+        end
     end
     SendChatMessage(msg, "WHISPER", nil, fullName)
 end
