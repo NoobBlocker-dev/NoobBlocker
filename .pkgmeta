@@ -1,6 +1,6 @@
 package-as: NoobBlocker
 
-enable-no-lib-creation: no
+enable-nolib-creation: no
 
 manual-changelog: 
  filename: CHANGELOG.md

@@ -22,7 +22,7 @@ local defaults = {
         Frostmourne = { blocked = true },
         Gundrak = { blocked = true },
         JubeiThos = { blocked = true },
-        Thaurisan = { blocked = true },
+        Thaurissan = { blocked = true },
     },
 }
 
@@ -140,7 +140,7 @@ local function SetupBlockedPlayerOptions(realm)
     blockedPlayers.args = blockedPlayersArgs
 
     for player in pairs(NoobBlocker_DB[realm]) do
-        if player ~= "response" and player ~= "blocked" then 
+        if player ~= "response" and player ~= "blocked" and player ~= "silent" then -- filter tags
             local playerGroup = {}
             blockedPlayersArgs[tostring(player)] = playerGroup
             playerGroup.name = tostring(player)

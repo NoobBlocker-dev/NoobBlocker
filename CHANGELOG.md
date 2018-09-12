@@ -1,3 +1,6 @@
+#9.12.2018
+Fixed silent tag showing up in player list.
+
 #9.5.2018 
 Accidentally commented out the timeout function oops. 
 
