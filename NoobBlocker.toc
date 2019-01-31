@@ -1,8 +1,8 @@
-## Interface: 80000
+## Interface: 80100
 ## Title: Noob Blocker
 ## Notes: Blocks unwanted realms and or players.
 ## SavedVariables: NoobBlocker_DB, NoobBlocker_Options
-## Version: 9.1.2018
+## Version: 1.31.2019
 libs\LibStub\LibStub.lua
 
 #@no-lib-strip@

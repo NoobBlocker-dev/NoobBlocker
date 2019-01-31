@@ -1,3 +1,6 @@
+#1.31.2019
+Updated interface patch to 8.1
+
 #9.12.2018
 Fixed silent tag showing up in player list.
 
