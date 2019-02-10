@@ -193,10 +193,10 @@ function NoobBlocker:LFG_LIST_APPLICANT_LIST_UPDATED(event, hasPending, hasPendi
         local applicants = C_LFGList.GetApplicants()
 
         for i=1, #applicants do 
-            local id, status, pendingStatus, numMembers, isNew = C_LFGList.GetApplicantInfo(applicants[i]);
+            local applicantInfo = C_LFGList.GetApplicantInfo(applicants[i]);
 
-            for i=1, numMembers do 
-                local fullName = C_LFGList.GetApplicantMemberInfo(id, i)
+            for i=1, applicantInfo.numMembers do 
+                local fullName = C_LFGList.GetApplicantMemberInfo(applicantInfo.applicantID, i)
                 local player, realm = ("-"):split(fullName)
                 if not realm then
                     realm = GetRealmName()
@@ -207,7 +207,7 @@ function NoobBlocker:LFG_LIST_APPLICANT_LIST_UPDATED(event, hasPending, hasPendi
                     or (self:DB_RealmExists(realm) and self:DB_GetRealm(realm).blocked) then
 
                     local dialog = StaticPopup_Show("NOOBBLOCKER_DECLINE_USER", "Decline "..fullName)
-                    dialog.data = id
+                    dialog.data = applicantInfo.applicantID
                     dialog.player = player
                     dialog.realm = realm
                     dialog.fullName = fullName
