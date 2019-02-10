@@ -1,3 +1,6 @@
+# 2.9.2019
+Fixed C_LFGList.GetApplicantInfo call.
+
 # 1.31.2019
 Updated interface patch to 8.1
 
